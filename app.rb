@@ -12,7 +12,7 @@ class Scraper
     @r = Redis.new
     @target = target
     @redis_list = redis_list
-    @number_of_errors = 0
+    @number_of_errors = []
   end
 
   def xml_to_redis
@@ -42,7 +42,7 @@ class Scraper
           report_error("##Skipped #{@target}#{url} at #{DateTime.now}\n#{error.class}: #{error.message}")
           log_errors
           retries = 2
-          @number_of_errors += 1
+          @number_of_errors << "#{url}"
           next
         else
           puts "Error, retrying..."

@@ -7,6 +7,6 @@ app.redis_list = "NEWS_XML"
 app.xml_to_redis
 
 puts "All done!!"
-puts "There were #{app.number_of_errors} errors, check log.txt for details..."
+puts "There were #{app.number_of_errors.length} errors, check log.txt for details..."
 puts "Press any key to exit..."
 STDIN.getch
