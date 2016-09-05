@@ -37,7 +37,7 @@ class Scraper
       rescue => error
         if retries == 0
           puts "Error, skipped after three failed attempts..."
-          report_error("##Skipped #{@target}#{url} at #{DateTime.now}\n#{error.class}: #{error.message}")
+          report_error("##Skipped #{url} at #{DateTime.now}\n#{error.class}: #{error.message}")
           log_errors
           retries = 2
           next
