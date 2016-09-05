@@ -6,11 +6,13 @@ require 'redis'
 class Scraper
 
   attr_accessor :target, :redis_list
+  attr_reader :number_of_errors
 
   def initialize
     @r = Redis.new
     @target = target
     @redis_list = redis_list
+    @number_of_errors = 0
   end
 
   def xml_to_redis
@@ -40,6 +42,7 @@ class Scraper
           report_error("##Skipped #{@target}#{url} at #{DateTime.now}\n#{error.class}: #{error.message}")
           log_errors
           retries = 2
+          @number_of_errors += 1
           next
         else
           puts "Error, retrying..."
