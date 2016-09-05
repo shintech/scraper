@@ -45,7 +45,7 @@ class Scraper
 
   def xml_to_redis(url)
     if url.split(".").last == "zip"
-      download = open("#{url}")
+      download = open(url)
       Zip::File.open(download) do |zip_file|
         zip_file.each do |f|
           xmldoc = f.get_input_stream.read
