@@ -15,7 +15,7 @@ class Scraper
     @number_of_errors = []
   end
 
-  def xml_to_redis
+  def start
     urls = []
     retries = 2
     page = Nokogiri::HTML(open(@target))
@@ -25,21 +25,11 @@ class Scraper
     puts "Downloading files from #{@target}..."
     urls.each do |url|
       begin
-        if url.split(".").last == "zip"
-          download = open("#{@target}#{url}")
-          Zip::File.open(download) do |zip_file|
-            zip_file.each do |f|
-              xmldoc = f.get_input_stream.read
-              @r.sadd "#{@redis_list}", "#{xmldoc}"
-            end
-            puts "Finished processing #{url}..."
-            download.close
-          end
-        end
+      xml_to_redis("#{target}#{url}")
       rescue => error
         if retries == 0
           puts "Error, skipped after three failed attempts..."
-          report_error("##Skipped #{@target}#{url} at #{DateTime.now}\n#{error.class}: #{error.message}")
+          report_error("##Skipped #{url} at #{DateTime.now}\n#{error.class}: #{error.message}")
           log_errors
           retries = 2
           @number_of_errors << "#{url}"
@@ -49,6 +39,20 @@ class Scraper
           retries -= 1
           retry
         end
+      end
+    end
+  end
+
+  def xml_to_redis(url)
+    if url.split(".").last == "zip"
+      download = open("#{url}")
+      Zip::File.open(download) do |zip_file|
+        zip_file.each do |f|
+          xmldoc = f.get_input_stream.read
+          @r.sadd "#{@redis_list}", "#{xmldoc}"
+        end
+        puts "Finished processing #{url}..."
+        download.close
       end
     end
   end

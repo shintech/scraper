@@ -18,4 +18,4 @@ Open terminal in directory and type "ruby run.rb"
 
 app.target("http://example.org/whatever")    # url from which to download zip files
 app.redis_list("NEWS_XML")    # name of Redis list.
-app.xml_to_redis     # downloads and extracts contents of zip folders to redis_list
+app.start     # downloads and extracts contents of zip folders to redis_list
