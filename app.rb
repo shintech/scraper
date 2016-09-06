@@ -30,7 +30,6 @@ class Scraper
         if retries == 0
           puts "Error, skipped after three failed attempts..."
           report_error("##Skipped #{url} at #{DateTime.now}\n#{error.class}: #{error.message}")
-          log_errors
           retries = 2
           @number_of_errors << "#{url}"
           next
@@ -58,14 +57,8 @@ class Scraper
   end
 
   def report_error(error_message)
-    (Thread.current[:errors] ||= []) << "#{error_message}"
-  end
-
-  def log_errors
     File.open('log.txt', 'a') do |file|
-      (Thread.current[:errors] ||= []).each do |error|
-        file.puts error
-      end
+      file.puts error_message
     end
   end
 
