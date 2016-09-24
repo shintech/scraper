@@ -22,7 +22,7 @@ class Scraper
     puts "Downloading files from #{@target}..."
     @urls.each do |url|
       begin
-      xml_to_redis("#{@target}#{url}")
+      xml_to_redis("#{target}#{url}")
       rescue => error
         if retries == 0
           puts "Error, skipped after three failed attempts..."
@@ -38,14 +38,14 @@ class Scraper
       end
     end
   end
-  
+
   def get_urls(target)
     page = Nokogiri::HTML(open(target))
     page.xpath('//a/@href').each do |links|
       @urls << links.content
     end
   end
-
+  
   def xml_to_redis(url)
     if url.split(".").last == "zip"
       download = open(url)
