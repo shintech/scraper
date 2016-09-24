@@ -12,7 +12,9 @@ Target url and Redis list can be changed as per instructions below.
 
 Directions:
 
-Open terminal in directory and type "ruby run.rb"
+Open terminal in the root directory and type "ruby lib/run.rb"
+
+**Must be executed from root directory or error logging will not work correctly.
 
 ################################################
 

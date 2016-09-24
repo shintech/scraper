@@ -1,4 +1,4 @@
-require_relative 'app'
+require_relative 'scraper'
 require 'io/console'
 
 app = Scraper.new
